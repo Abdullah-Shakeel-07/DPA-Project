@@ -1,0 +1,11 @@
+services:
+    notebook:
+        build:
+            context: .
+        command: start-notebook.py --NotebookApp.token='' --NotebookApp.password='' --no-browser
+        volumes:
+            - type: bind
+              source: .
+              target: /home/jovyan/project
+        ports:
+            - 8889:8888

@@ -1,0 +1,5 @@
+# i dont want to uplaod the data
+data/
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
