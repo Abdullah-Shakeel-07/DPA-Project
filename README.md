@@ -2,7 +2,7 @@
 
 Part 1: Volume
 
-Group: Abdullah Shakee, Salouma
+Group: Abdullah Shakeel, Salma Ellouxe
 
 ## Question
 
@@ -40,28 +40,25 @@ results/                    csv tables and png charts
 
 Need **Docker** (Docker Desktop on Windows/Mac) and **git**.
 
-1. Clone the repo and start the container:
+Clone the repo and start the container:
    ```
    git clone https://github.com/Abdullah-Shakeel-07/DPA-Project.git
    cd DPA-Project
    docker compose up -d --build
    ```
-2. Download the data (this takes a while becasue the flight files are big):
+Download the data (this takes a while becasue the flight files are big):
    ```
    docker compose exec notebook python project/scripts/download_data.py
    ```
-3. Convert the csv files to parquet:
+Convert the csv files to parquet:
    ```
    docker compose exec notebook python project/scripts/ingest.py
    ```
-4. Open http://localhost:8889 in the browser, go to `project/notebooks/` and run the notebooks in this order (Run All):
+Open http://localhost:8889 in the browser, go to `project/notebooks/` and run the notebooks in this order (Run All):
    1. `data_cleaning.ipynb`
    2. `data_join.ipynb`
    3. `analysis.ipynb`
-5. Stop the container when you are done:
-   ```
-   docker compose down
-   ```
+
 
 The results (csv files and charts) are saved in `results/`.
 
