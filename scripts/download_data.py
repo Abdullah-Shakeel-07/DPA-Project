@@ -1,6 +1,5 @@
 import csv
 import os
-import time
 import urllib.request
 import zipfile
 from collections import Counter
@@ -25,19 +24,14 @@ def download(url, path):
         print("already downloaded:", os.path.basename(path))
         return True
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    # try 3 times
-    for i in range(3):
-        try:
-            urllib.request.urlretrieve(url, path + ".tmp")
-            os.rename(path + ".tmp", path)
-            print("downloaded:", os.path.basename(path))
-            return True
-        except Exception as e:
-            print("error:", e)
-            if "404" in str(e):  # if file does not exit on the server then no retry
-                return False
-            time.sleep(10)
-    return False
+    try:
+        urllib.request.urlretrieve(url, path + ".tmp")
+        os.rename(path + ".tmp", path)
+        print("downloaded:", os.path.basename(path))
+        return True
+    except Exception as e:
+        print("error:", url, e)
+        return False
 
 
 # airport data
@@ -62,17 +56,15 @@ for year in YEARS:
 
 
 # weather data
-print("--- NOAA weather ---")
+print("NOAA weather")
 
 # finding the busiest airports by counting departures in the flight files
 counts = Counter()
-for f in sorted(os.listdir(bts_dir)):
+for f in os.listdir(bts_dir):
     if f.endswith(".csv"):
         with open(os.path.join(bts_dir, f), encoding="latin-1") as file:
-            reader = csv.reader(file)
-            origin_col = next(reader).index("Origin")
-            for row in reader:
-                counts[row[origin_col]] += 1
+            for row in csv.DictReader(file):
+                counts[row["Origin"]] += 1
 top_airports = [code for code, n in counts.most_common(NB_AIRPORTS)]
 
 # getting the airport code from OurAirports data

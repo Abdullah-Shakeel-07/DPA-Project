@@ -1,120 +1,73 @@
 # read the rew csv files and convert them to the parquet files
-# docker compose exec notebook python project/scripts/ingest.py
 import glob
 import os
 
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 RAW = os.path.join(ROOT, "data", "raw")
 OUT = os.path.join(ROOT, "data", "parquet")
 
-spark = (SparkSession.builder
-         .appName("dpa-ingest")
-         .config("spark.driver.memory", "4g")
-         .getOrCreate())
+spark = (SparkSession.builder.appName("dpa-ingest").config("spark.driver.memory", "2g").getOrCreate())
 spark.sparkContext.setLogLevel("WARN")
 
 
 # for flights
 # the files have 110 columns but we only needs these ones
 flight_types = {
-    "Year": IntegerType(), "Month": IntegerType(),
-    "DayofMonth": IntegerType(), "DayOfWeek": IntegerType(),
-    "FlightDate": StringType(),
-    "Reporting_Airline": StringType(), "Tail_Number": StringType(),
-    "Flight_Number_Reporting_Airline": IntegerType(),
-    "Origin": StringType(), "OriginCityName": StringType(), "OriginState": StringType(),
-    "Dest": StringType(), "DestCityName": StringType(), "DestState": StringType(),
-    "CRSDepTime": StringType(), "DepTime": StringType(),
-    "CRSArrTime": StringType(), "ArrTime": StringType(),
-    "DepDelay": DoubleType(), "DepDelayMinutes": DoubleType(), "DepDel15": DoubleType(),
-    "TaxiOut": DoubleType(),
-    "ArrDelay": DoubleType(), "ArrDelayMinutes": DoubleType(), "ArrDel15": DoubleType(),
-    "Cancelled": DoubleType(), "CancellationCode": StringType(), "Diverted": DoubleType(),
-    "CRSElapsedTime": DoubleType(), "ActualElapsedTime": DoubleType(),
-    "AirTime": DoubleType(), "Distance": DoubleType(),
-    "CarrierDelay": DoubleType(), "WeatherDelay": DoubleType(), "NASDelay": DoubleType(),
-    "SecurityDelay": DoubleType(), "LateAircraftDelay": DoubleType(),
+    "Year": "int", "Month": "int", "FlightDate": "string", "DayOfWeek": "int",
+    "Reporting_Airline": "string", "Tail_Number": "string", "Flight_Number_Reporting_Airline": "int",
+    "Origin": "string", "Dest": "string", "CRSDepTime": "string", "CRSArrTime": "string",
+    "DepDelay": "double", "ArrDelay": "double", "ArrDel15": "double",
+    "Cancelled": "double", "Diverted": "double", "AirTime": "double", "Distance": "double",
+    "CarrierDelay": "double", "WeatherDelay": "double", "NASDelay": "double", "LateAircraftDelay": "double",
 }
 
-flight_files = sorted(glob.glob(os.path.join(RAW, "bts", "*.csv")))
+flight_files = glob.glob(os.path.join(RAW, "bts", "*.csv"))
 print("flight files found:", len(flight_files))
 
-with open(flight_files[0], encoding="latin-1") as f:
-    header = [h.strip().strip('"') for h in f.readline().split(",")]
-header = [h if h else f"unused_{i}" for i, h in enumerate(header)]  # last column has no name
-
-flight_schema = StructType([StructField(h, flight_types.get(h, StringType())) for h in header])
-
-flights = (spark.read
-           .option("header", True)
-           .option("escape", '"')
-           .schema(flight_schema)
-           .csv(flight_files)
-           .select(list(flight_types.keys())))
+flights = spark.read.option("header", True).option("escape", '"').csv(flight_files)
+flights = flights.select([F.col(c).cast(t) for c, t in flight_types.items()])
 
 flights.write.mode("overwrite").partitionBy("Year", "Month").parquet(os.path.join(OUT, "flights"))
 print("flights data done:", spark.read.parquet(os.path.join(OUT, "flights")).count(), "rows")
 
 
 # airports data
-airport_schema = StructType([
-    StructField("id", IntegerType()), StructField("ident", StringType()),
-    StructField("type", StringType()), StructField("name", StringType()),
-    StructField("latitude_deg", DoubleType()), StructField("longitude_deg", DoubleType()),
-    StructField("elevation_ft", IntegerType()), StructField("continent", StringType()),
-    StructField("iso_country", StringType()), StructField("iso_region", StringType()),
-    StructField("municipality", StringType()), StructField("scheduled_service", StringType()),
-    StructField("icao_code", StringType()), StructField("iata_code", StringType()),
-    StructField("gps_code", StringType()), StructField("local_code", StringType()),
-    StructField("home_link", StringType()), StructField("wikipedia_link", StringType()),
-    StructField("keywords", StringType()),
-])
+airport_types = {
+    "type": "string", "name": "string", "iso_country": "string", "iso_region": "string",
+    "municipality": "string", "icao_code": "string", "iata_code": "string",
+    "latitude_deg": "double", "longitude_deg": "double", "elevation_ft": "int",
+}
 
-airports = (spark.read
-            .option("header", True)
-            .option("escape", '"')
-            .schema(airport_schema)
-            .csv(os.path.join(RAW, "airports.csv")))
+airports = spark.read.option("header", True).option("escape", '"').csv(os.path.join(RAW, "airports.csv"))
+airports = airports.select([F.col(c).cast(t) for c, t in airport_types.items()])
 
 airports.write.mode("overwrite").parquet(os.path.join(OUT, "airports"))
 print("airports data done:", airports.count(), "rows")
 
 
 # weather data
-# each station file has a different set of columns, so we read them one by one
+# each station file has a different set of columns so we read them one by one
 # and only keep the columns we need
+weather_cols = ["STATION", "DATE", "REPORT_TYPE", "WND", "CIG", "VIS", "TMP", "DEW", "AA1"]
 
-weather_cols = ["STATION", "DATE", "REPORT_TYPE", "CALL_SIGN",
-                "WND", "CIG", "VIS", "TMP", "DEW", "AA1"]
-
-parts = []
-for path in sorted(glob.glob(os.path.join(RAW, "noaa", "20*", "*.csv"))):
+weather = None
+for path in glob.glob(os.path.join(RAW, "noaa", "20*", "*.csv")):
     df = spark.read.option("header", True).option("escape", '"').csv(path)
     for c in weather_cols:
         if c not in df.columns:
-            df = df.withColumn(c, F.lit(None))
-    parts.append(df.select([F.col(c).cast(StringType()) for c in weather_cols]))
-
-
-weather = parts[0]
-for df in parts[1:]:
-    weather = weather.unionByName(df)
+            df = df.withColumn(c, F.lit(None).cast("string"))
+    df = df.select(weather_cols)
+    weather = df if weather is None else weather.union(df)
 
 weather.write.mode("overwrite").parquet(os.path.join(OUT, "weather"))
 print("weather data done:", spark.read.parquet(os.path.join(OUT, "weather")).count(), "rows")
 
 
 # airport to station mapping
-station_schema = StructType([
-    StructField("iata", StringType()), StructField("icao", StringType()),
-    StructField("station", StringType()),
-])
-stations = (spark.read.option("header", True).schema(station_schema)
-            .csv(os.path.join(RAW, "noaa", "stations.csv")))
+stations = spark.read.option("header", True).csv(os.path.join(RAW, "noaa", "stations.csv"))
 stations.write.mode("overwrite").parquet(os.path.join(OUT, "stations"))
 print("stations done:", stations.count(), "rows")
 
