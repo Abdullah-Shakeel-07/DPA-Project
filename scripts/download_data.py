@@ -1,5 +1,7 @@
 import csv
 import os
+import time
+import socket
 import urllib.request
 import zipfile
 from collections import Counter
@@ -17,6 +19,17 @@ WEATHER_URL = "https://noaa-global-hourly-pds.s3.amazonaws.com/{}/{}.csv"
 opener = urllib.request.build_opener()
 opener.addheaders = [("User-Agent", "Mozilla/5.0")]
 urllib.request.install_opener(opener)
+socket.setdefaulttimeout(120)   # stop waiting if the server does not answer for 2 minutes
+
+
+# prints how many MB are downloaded, every 1 MB
+def show_progress(blocks, block_size, total_size):
+    done = blocks * block_size
+    if done % (1024 * 1024) < block_size:
+        if total_size > 0:
+            print("", done // (1024 * 1024), "MB of", total_size // (1024 * 1024), "MB")
+        else:
+            print("", done // (1024 * 1024), "MB")
 
 
 def download(url, path):
@@ -24,14 +37,19 @@ def download(url, path):
         print("already downloaded:", os.path.basename(path))
         return True
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    try:
-        urllib.request.urlretrieve(url, path + ".tmp")
-        os.rename(path + ".tmp", path)
-        print("downloaded:", os.path.basename(path))
-        return True
-    except Exception as e:
-        print("error:", url, e)
-        return False
+    # the servers sometimes fail, so we try 3 times before giving up
+    for attempt in range(3):
+        try:
+            print("downloading:", os.path.basename(path))
+            urllib.request.urlretrieve(url, path + ".tmp", show_progress)
+            os.rename(path + ".tmp", path)
+            print("downloaded:", os.path.basename(path))
+            return True
+        except Exception as e:
+            print("error:", url, e, "- trying again")
+            time.sleep(10)
+    print("could not download:", url)
+    return False
 
 
 # airport data
@@ -40,8 +58,11 @@ download(AIRPORTS_URL, os.path.join(RAW, "airports.csv"))
 
 # flights data and keepojg the one zip file for each month
 bts_dir = os.path.join(RAW, "bts")
+file_number = 0
 for year in YEARS:
     for month in range(1, 13):
+        file_number += 1
+        print(f"flight file {file_number} of 24 ({year}-{month:02d})")
         csv_file = os.path.join(bts_dir, f"flights_{year}_{month:02d}.csv")
         if os.path.exists(csv_file):
             print("already downloaded:", os.path.basename(csv_file))
@@ -53,19 +74,23 @@ for year in YEARS:
                 z.extract(name, bts_dir)
             os.rename(os.path.join(bts_dir, name), csv_file)
             os.remove(zip_file)
+            print("unzipped:", os.path.basename(csv_file))
 
 
 # weather data
 print("NOAA weather")
 
 # finding the busiest airports by counting departures in the flight files
+# this reads all the flight files so it takes a few minutes
 counts = Counter()
-for f in os.listdir(bts_dir):
+for f in sorted(os.listdir(bts_dir)):
     if f.endswith(".csv"):
+        print("counting flights in", f)
         with open(os.path.join(bts_dir, f), encoding="latin-1") as file:
             for row in csv.DictReader(file):
                 counts[row["Origin"]] += 1
 top_airports = [code for code, n in counts.most_common(NB_AIRPORTS)]
+print("busiest airports:", top_airports)
 
 # getting the airport code from OurAirports data
 icao = {}
@@ -89,6 +114,7 @@ with open(os.path.join(RAW, "noaa", "stations.csv"), "w", newline="") as file:
     for airport in top_airports:
         code = icao.get(airport)
         if code in station_of:
+            print("weather for", airport)
             writer.writerow([airport, code, station_of[code]])
             for year in YEARS:
                 download(WEATHER_URL.format(year, station_of[code]),
