@@ -1,0 +1,3 @@
+bad_weather,flights,avg_dep_delay,avg_arr_delay,pct_dep_late_15min
+True,788554,20.3,17.7,26.6
+False,9946012,12.2,6.2,20.2

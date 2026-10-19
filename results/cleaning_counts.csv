@@ -1,0 +1,12 @@
+table,step,rows_left,rows_removed
+flights,raw data,13926960,0
+flights,remove duplicates,13926960,0
+flights,remove cancelled and diverted,13708651,218309
+flights,remove missing delay or tail number,13708650,1
+flights,remove impossible values,13708650,0
+airports,raw data,86242,0
+airports,keep open US airports with IATA code,2036,84206
+airports,remove duplicate IATA codes,2036,0
+weather,raw data,1263091,0
+weather,keep hourly reports FM-15,858829,404262
+weather,one report per station and hour,857812,1017

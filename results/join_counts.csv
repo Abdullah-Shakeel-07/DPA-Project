@@ -1,0 +1,5 @@
+step,rows_left,rows_removed
+clean flights,13708650,0
+flights with a known origin airport,13564369,144281
+flights from the airports with a weather station,10762148,2802221
+flights matched with weather,10734566,27582

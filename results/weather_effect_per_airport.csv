@@ -1,0 +1,50 @@
+airport,origin_name,flights,delay_good_weather,delay_bad_weather,extra_delay
+MCO,Orlando International Airport,317205,17.0,35.8,18.8
+MCI,Kansas City International Airport,96694,9.6,13.5,3.9
+LAS,Harry Reid International Airport,373087,13.8,30.9,17.1
+PDX,Portland International Airport,116342,7.5,8.5,1.0
+BWI,Baltimore/Washington International Thurgood Marshall Airport,191981,14.8,22.9,8.1
+HOU,William P. Hobby Airport,110900,11.0,19.5,8.5
+FLL,Fort Lauderdale Hollywood International Airport,177797,19.0,45.2,26.2
+SEA,Seattle–Tacoma International Airport,322593,8.8,9.9,1.1
+MIA,Miami International Airport,208381,18.4,47.8,29.4
+MDW,Chicago Midway International Airport,161929,12.6,22.5,9.9
+JFK,John F. Kennedy International Airport,249639,13.0,23.6,10.6
+MSY,Louis Armstrong New Orleans International Airport,98034,12.9,21.9,9.0
+BOS,Boston Logan International Airport,278137,12.0,23.3,11.3
+SJC,Mineta San Jose International Airport,101345,6.7,6.9,0.2
+DCA,Ronald Reagan Washington National Airport,274342,10.1,19.6,9.5
+SAT,San Antonio International Airport,79820,10.5,10.9,0.4
+CLT,Charlotte Douglas International Airport,405405,15.8,22.5,6.7
+DTW,Detroit Metropolitan Wayne County Airport,253406,9.9,16.5,6.6
+DAL,Dallas Love Field,145178,12.0,26.7,14.7
+ORD,Chicago O'Hare International Airport,529158,13.1,22.0,8.9
+PHL,Philadelphia International Airport,186786,13.3,19.3,6.0
+LGA,LaGuardia Airport,316147,9.4,21.6,12.2
+SAN,San Diego International Airport,182341,10.7,21.1,10.4
+MSP,Minneapolis–Saint Paul International Airport / Wold–Chamberlain Field,244639,8.4,15.6,7.2
+IAD,Washington Dulles International Airport,100999,10.1,16.8,6.7
+PHX,Phoenix Sky Harbor International Airport,366132,10.8,27.0,16.2
+CLE,Cleveland Hopkins International Airport,81089,10.5,14.4,3.9
+SNA,John Wayne Orange County International Airport,87015,10.8,10.3,-0.5
+STL,St. Louis Lambert International Airport,125518,11.6,17.5,5.9
+CVG,Cincinnati Northern Kentucky International Airport,79535,10.0,13.6,3.6
+HNL,Daniel K. Inouye International Airport,121652,7.2,9.9,2.7
+PIT,Pittsburgh International Airport,84403,8.1,11.0,2.9
+SMF,Sacramento International Airport,106674,8.5,10.8,2.3
+LAX,Los Angeles International Airport,383281,10.4,12.8,2.4
+ATL,Hartsfield Jackson Atlanta International Airport,669910,10.6,17.8,7.2
+SLC,Salt Lake City International Airport,219859,8.6,16.5,7.9
+RSW,Southwest Florida International Airport,66274,11.9,31.7,19.8
+DEN,Denver International Airport,587234,13.3,27.4,14.1
+IND,Indianapolis International Airport,91105,8.6,11.9,3.3
+AUS,Austin Bergstrom International Airport,175276,13.5,16.5,3.0
+TPA,Tampa International Airport,152894,13.0,28.5,15.5
+IAH,George Bush Intercontinental Airport,223362,15.6,27.4,11.8
+DFW,Dallas Fort Worth International Airport,585530,16.5,28.9,12.4
+EWR,Newark Liberty International Airport,259312,13.7,21.8,8.1
+SFO,San Francisco International Airport,265639,12.3,19.4,7.1
+BNA,Nashville International Airport,193522,11.2,19.1,7.9
+CMH,John Glenn Columbus International Airport,82309,8.3,10.1,1.8
+OAK,Oakland San Francisco Bay Airport,86475,9.3,9.7,0.4
+RDU,Raleigh-Durham International Airport,118281,12.4,17.5,5.1

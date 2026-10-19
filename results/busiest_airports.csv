@@ -1,0 +1,51 @@
+airport,name,state,departures,arrivals,total_flights,airlines
+ATL,Hartsfield Jackson Atlanta International Airport,US-GA,670597,670625,1341222,13
+DEN,Denver International Airport,US-CO,588523,587602,1176125,11
+DFW,Dallas Fort Worth International Airport,US-TX,586893,585955,1172848,12
+ORD,Chicago O'Hare International Airport,US-IL,530576,529930,1060506,12
+CLT,Charlotte Douglas International Airport,US-NC,406947,406947,813894,12
+LAX,Los Angeles International Airport,US-CA,384163,384527,768690,12
+LAS,Harry Reid International Airport,US-NV,375059,375552,750611,12
+PHX,Phoenix Sky Harbor International Airport,US-AZ,367012,367217,734229,12
+SEA,Seattle–Tacoma International Airport,US-WA,323960,323722,647682,11
+MCO,Orlando International Airport,US-FL,318104,317409,635513,9
+LGA,LaGuardia Airport,US-NY,316952,316617,633569,10
+BOS,Boston Logan International Airport,US-MA,278607,278742,557349,14
+DCA,Ronald Reagan Washington National Airport,US-DC,275008,274736,549744,12
+SFO,San Francisco International Airport,US-CA,266771,266870,533641,10
+EWR,Newark Liberty International Airport,US-NJ,259826,259251,519077,12
+DTW,Detroit Metropolitan Wayne County Airport,US-MI,254071,254212,508283,13
+JFK,John F. Kennedy International Airport,US-NY,250390,250128,500518,9
+MSP,Minneapolis–Saint Paul International Airport / Wold–Chamberlain Field,US-MN,245644,245855,491499,14
+IAH,George Bush Intercontinental Airport,US-TX,223640,223320,446960,13
+SLC,Salt Lake City International Airport,US-UT,220419,220748,441167,11
+MIA,Miami International Airport,US-FL,208911,208640,417551,11
+BNA,Nashville International Airport,US-TN,193868,194040,387908,14
+BWI,Baltimore/Washington International Thurgood Marshall Airport,US-MD,192283,192274,384557,14
+PHL,Philadelphia International Airport,US-PA,187404,187468,374872,12
+SAN,San Diego International Airport,US-CA,182897,183072,365969,11
+FLL,Fort Lauderdale Hollywood International Airport,US-FL,178054,177874,355928,10
+AUS,Austin Bergstrom International Airport,US-TX,175743,175847,351590,15
+MDW,Chicago Midway International Airport,US-IL,162175,161951,324126,6
+TPA,Tampa International Airport,US-FL,153642,153735,307377,11
+DAL,Dallas Love Field,US-TX,145205,144860,290065,3
+STL,St. Louis Lambert International Airport,US-MO,125957,126140,252097,12
+HNL,Daniel K. Inouye International Airport,US-HI,121966,121799,243765,6
+RDU,Raleigh-Durham International Airport,US-NC,118658,118787,237445,13
+PDX,Portland International Airport,US-OR,116714,116857,233571,12
+HOU,William P. Hobby Airport,US-TX,110937,110656,221593,7
+SMF,Sacramento International Airport,US-CA,106972,107138,214110,11
+SJC,Mineta San Jose International Airport,US-CA,101507,101499,203006,11
+IAD,Washington Dulles International Airport,US-VA,101206,101236,202442,12
+MSY,Louis Armstrong New Orleans International Airport,US-LA,98312,98434,196746,14
+MCI,Kansas City International Airport,US-MO,96982,97127,194109,14
+IND,Indianapolis International Airport,US-IN,91273,91388,182661,13
+SNA,John Wayne Orange County International Airport,US-CA,87195,87348,174543,9
+OAK,Oakland San Francisco Bay Airport,US-CA,86528,86500,173028,8
+PIT,Pittsburgh International Airport,US-PA,84632,84613,169245,14
+CMH,John Glenn Columbus International Airport,US-OH,82432,82496,164928,12
+CLE,Cleveland Hopkins International Airport,US-OH,81237,81364,162601,13
+SAT,San Antonio International Airport,US-TX,80135,80247,160382,12
+CVG,Cincinnati Northern Kentucky International Airport,US-KY,79665,79782,159447,12
+SJU,,,66876,67178,134054,8
+RSW,Southwest Florida International Airport,US-FL,66496,66537,133033,12

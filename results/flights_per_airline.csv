@@ -1,0 +1,16 @@
+code,airline,flights,pct_of_all_flights,avg_arr_delay,pct_late_15min
+WN,Southwest,2825835,20.6,5.5,21.2
+DL,Delta,1970757,14.4,3.0,16.8
+AA,American,1894174,13.8,13.8,24.6
+UA,United,1465850,10.7,6.0,20.2
+OO,SkyWest,1398747,10.2,6.0,17.7
+YX,Republic,581795,4.2,-2.6,13.6
+NK,Spirit,514471,3.8,11.6,26.5
+B6,JetBlue,503598,3.7,14.9,28.5
+MQ,Envoy,500012,3.6,5.2,19.6
+AS,Alaska,482966,3.5,3.5,20.8
+OH,PSA,414745,3.0,6.9,19.4
+9E,Endeavor,391977,2.9,0.2,14.9
+F9,Frontier,376941,2.7,16.6,30.0
+G4,Allegiant,229307,1.7,11.9,23.8
+HA,Hawaiian,157475,1.1,7.0,19.7
